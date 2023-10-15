@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type DoctorServiceClient interface {
 	RegisterDoctor(ctx context.Context, in *RegisterDoctorRequest, opts ...grpc.CallOption) (*RegisterDoctorResponse, error)
 	GetDoctor(ctx context.Context, in *GetDoctorRequest, opts ...grpc.CallOption) (*GetDoctorResponse, error)
-	CheckDoctorAvailability(ctx context.Context, in *CheckDoctorAvailabilityRequest, opts ...grpc.CallOption) (*CheckDoctorAvailabilityResponse, error)
+	CheckDoctorAvailability(ctx context.Context, in *DoctorAvailabilityRequest, opts ...grpc.CallOption) (*DoctorAvailabilityResponse, error)
 	UpdateDoctor(ctx context.Context, in *UpdateDoctorRequest, opts ...grpc.CallOption) (*UpdateDoctorResponse, error)
 	DeleteDoctor(ctx context.Context, in *DeleteDoctorRequest, opts ...grpc.CallOption) (*DeleteDoctorResponse, error)
 }
@@ -55,8 +55,8 @@ func (c *doctorServiceClient) GetDoctor(ctx context.Context, in *GetDoctorReques
 	return out, nil
 }
 
-func (c *doctorServiceClient) CheckDoctorAvailability(ctx context.Context, in *CheckDoctorAvailabilityRequest, opts ...grpc.CallOption) (*CheckDoctorAvailabilityResponse, error) {
-	out := new(CheckDoctorAvailabilityResponse)
+func (c *doctorServiceClient) CheckDoctorAvailability(ctx context.Context, in *DoctorAvailabilityRequest, opts ...grpc.CallOption) (*DoctorAvailabilityResponse, error) {
+	out := new(DoctorAvailabilityResponse)
 	err := c.cc.Invoke(ctx, "/doctor.DoctorService/CheckDoctorAvailability", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (c *doctorServiceClient) DeleteDoctor(ctx context.Context, in *DeleteDoctor
 type DoctorServiceServer interface {
 	RegisterDoctor(context.Context, *RegisterDoctorRequest) (*RegisterDoctorResponse, error)
 	GetDoctor(context.Context, *GetDoctorRequest) (*GetDoctorResponse, error)
-	CheckDoctorAvailability(context.Context, *CheckDoctorAvailabilityRequest) (*CheckDoctorAvailabilityResponse, error)
+	CheckDoctorAvailability(context.Context, *DoctorAvailabilityRequest) (*DoctorAvailabilityResponse, error)
 	UpdateDoctor(context.Context, *UpdateDoctorRequest) (*UpdateDoctorResponse, error)
 	DeleteDoctor(context.Context, *DeleteDoctorRequest) (*DeleteDoctorResponse, error)
 	mustEmbedUnimplementedDoctorServiceServer()
@@ -104,7 +104,7 @@ func (UnimplementedDoctorServiceServer) RegisterDoctor(context.Context, *Registe
 func (UnimplementedDoctorServiceServer) GetDoctor(context.Context, *GetDoctorRequest) (*GetDoctorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDoctor not implemented")
 }
-func (UnimplementedDoctorServiceServer) CheckDoctorAvailability(context.Context, *CheckDoctorAvailabilityRequest) (*CheckDoctorAvailabilityResponse, error) {
+func (UnimplementedDoctorServiceServer) CheckDoctorAvailability(context.Context, *DoctorAvailabilityRequest) (*DoctorAvailabilityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckDoctorAvailability not implemented")
 }
 func (UnimplementedDoctorServiceServer) UpdateDoctor(context.Context, *UpdateDoctorRequest) (*UpdateDoctorResponse, error) {
@@ -163,7 +163,7 @@ func _DoctorService_GetDoctor_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _DoctorService_CheckDoctorAvailability_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckDoctorAvailabilityRequest)
+	in := new(DoctorAvailabilityRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -175,7 +175,7 @@ func _DoctorService_CheckDoctorAvailability_Handler(srv interface{}, ctx context
 		FullMethod: "/doctor.DoctorService/CheckDoctorAvailability",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DoctorServiceServer).CheckDoctorAvailability(ctx, req.(*CheckDoctorAvailabilityRequest))
+		return srv.(DoctorServiceServer).CheckDoctorAvailability(ctx, req.(*DoctorAvailabilityRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
