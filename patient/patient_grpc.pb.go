@@ -24,6 +24,8 @@ const (
 	PatientService_UpdatePatient_FullMethodName     = "/patient.PatientService/UpdatePatient"
 	PatientService_DeletePatient_FullMethodName     = "/patient.PatientService/DeletePatient"
 	PatientService_GetMedicalHistory_FullMethodName = "/patient.PatientService/GetMedicalHistory"
+	PatientService_AddMedicalRecords_FullMethodName = "/patient.PatientService/AddMedicalRecords"
+	PatientService_AddAllergies_FullMethodName      = "/patient.PatientService/AddAllergies"
 )
 
 // PatientServiceClient is the client API for PatientService service.
@@ -35,6 +37,8 @@ type PatientServiceClient interface {
 	UpdatePatient(ctx context.Context, in *UpdatePatientRequest, opts ...grpc.CallOption) (*UpdatePatientResponse, error)
 	DeletePatient(ctx context.Context, in *DeletePatientRequest, opts ...grpc.CallOption) (*DeletePatientResponse, error)
 	GetMedicalHistory(ctx context.Context, in *GetMedicalHistoryRequest, opts ...grpc.CallOption) (*GetMedicalHistoryResponse, error)
+	AddMedicalRecords(ctx context.Context, in *AddMedicalRecordsRequest, opts ...grpc.CallOption) (*AddMedicalRecordsResponse, error)
+	AddAllergies(ctx context.Context, in *AddAllergiesRequest, opts ...grpc.CallOption) (*AddAllergiesResponse, error)
 }
 
 type patientServiceClient struct {
@@ -90,6 +94,24 @@ func (c *patientServiceClient) GetMedicalHistory(ctx context.Context, in *GetMed
 	return out, nil
 }
 
+func (c *patientServiceClient) AddMedicalRecords(ctx context.Context, in *AddMedicalRecordsRequest, opts ...grpc.CallOption) (*AddMedicalRecordsResponse, error) {
+	out := new(AddMedicalRecordsResponse)
+	err := c.cc.Invoke(ctx, PatientService_AddMedicalRecords_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *patientServiceClient) AddAllergies(ctx context.Context, in *AddAllergiesRequest, opts ...grpc.CallOption) (*AddAllergiesResponse, error) {
+	out := new(AddAllergiesResponse)
+	err := c.cc.Invoke(ctx, PatientService_AddAllergies_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PatientServiceServer is the server API for PatientService service.
 // All implementations must embed UnimplementedPatientServiceServer
 // for forward compatibility
@@ -99,6 +121,8 @@ type PatientServiceServer interface {
 	UpdatePatient(context.Context, *UpdatePatientRequest) (*UpdatePatientResponse, error)
 	DeletePatient(context.Context, *DeletePatientRequest) (*DeletePatientResponse, error)
 	GetMedicalHistory(context.Context, *GetMedicalHistoryRequest) (*GetMedicalHistoryResponse, error)
+	AddMedicalRecords(context.Context, *AddMedicalRecordsRequest) (*AddMedicalRecordsResponse, error)
+	AddAllergies(context.Context, *AddAllergiesRequest) (*AddAllergiesResponse, error)
 	mustEmbedUnimplementedPatientServiceServer()
 }
 
@@ -120,6 +144,12 @@ func (UnimplementedPatientServiceServer) DeletePatient(context.Context, *DeleteP
 }
 func (UnimplementedPatientServiceServer) GetMedicalHistory(context.Context, *GetMedicalHistoryRequest) (*GetMedicalHistoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMedicalHistory not implemented")
+}
+func (UnimplementedPatientServiceServer) AddMedicalRecords(context.Context, *AddMedicalRecordsRequest) (*AddMedicalRecordsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddMedicalRecords not implemented")
+}
+func (UnimplementedPatientServiceServer) AddAllergies(context.Context, *AddAllergiesRequest) (*AddAllergiesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddAllergies not implemented")
 }
 func (UnimplementedPatientServiceServer) mustEmbedUnimplementedPatientServiceServer() {}
 
@@ -224,6 +254,42 @@ func _PatientService_GetMedicalHistory_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PatientService_AddMedicalRecords_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddMedicalRecordsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PatientServiceServer).AddMedicalRecords(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PatientService_AddMedicalRecords_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PatientServiceServer).AddMedicalRecords(ctx, req.(*AddMedicalRecordsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PatientService_AddAllergies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddAllergiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PatientServiceServer).AddAllergies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PatientService_AddAllergies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PatientServiceServer).AddAllergies(ctx, req.(*AddAllergiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PatientService_ServiceDesc is the grpc.ServiceDesc for PatientService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +316,14 @@ var PatientService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetMedicalHistory",
 			Handler:    _PatientService_GetMedicalHistory_Handler,
+		},
+		{
+			MethodName: "AddMedicalRecords",
+			Handler:    _PatientService_AddMedicalRecords_Handler,
+		},
+		{
+			MethodName: "AddAllergies",
+			Handler:    _PatientService_AddAllergies_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
